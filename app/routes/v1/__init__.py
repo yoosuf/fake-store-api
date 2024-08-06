@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify
 
+from app.gql.graphql_view import graphql_bp
+
 v1_bp = Blueprint('v1', __name__)
 
 
@@ -21,3 +23,5 @@ def register_v1_routes(app):
         return jsonify({"message": "API v1 is working!"})
 
     app.register_blueprint(v1_bp, url_prefix='/api/v1')
+    app.register_blueprint(graphql_bp, url_prefix='/')
+
