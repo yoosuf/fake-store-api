@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from app.gql.graphql_view import graphql_bp
+from app.routes.v1.graphql_view import graphql_bp
 
 v1_bp = Blueprint('v1', __name__)
 

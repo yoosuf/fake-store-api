@@ -7,6 +7,7 @@ app = create_app()
 app.app_context().push()
 faker = Faker()
 
+
 def seed_users(num_users=10):
     for _ in range(num_users):
         user = User(
@@ -19,6 +20,7 @@ def seed_users(num_users=10):
         db.session.add(user)
     db.session.commit()
 
+
 def seed_categories(num_categories=5):
     for _ in range(num_categories):
         category = Category(
@@ -27,6 +29,7 @@ def seed_categories(num_categories=5):
         )
         db.session.add(category)
     db.session.commit()
+
 
 def seed_products(num_products=20):
     category_ids = [category.id for category in Category.query.all()]
@@ -41,6 +44,7 @@ def seed_products(num_products=20):
         db.session.add(product)
     db.session.commit()
 
+
 def run_seeder():
     db.drop_all()
     db.create_all()
@@ -48,6 +52,7 @@ def run_seeder():
     seed_users()
     seed_categories()
     seed_products()
+
 
 if __name__ == "__main__":
     run_seeder()

@@ -3,25 +3,30 @@ from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from app.models import User as UserModel, Product as ProductModel, Category as CategoryModel, File as FileModel
 from app.extensions import db
 
+
 class User(SQLAlchemyObjectType):
     class Meta:
         model = UserModel
         interfaces = (graphene.relay.Node,)
+
 
 class Product(SQLAlchemyObjectType):
     class Meta:
         model = ProductModel
         interfaces = (graphene.relay.Node,)
 
+
 class Category(SQLAlchemyObjectType):
     class Meta:
         model = CategoryModel
         interfaces = (graphene.relay.Node,)
 
+
 class File(SQLAlchemyObjectType):
     class Meta:
         model = FileModel
         interfaces = (graphene.relay.Node,)
+
 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
@@ -47,6 +52,7 @@ class Query(graphene.ObjectType):
     def resolve_file(self, info, id):
         return FileModel.query.get(id)
 
+
 class CreateUser(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
@@ -63,6 +69,7 @@ class CreateUser(graphene.Mutation):
         db.session.commit()
         return CreateUser(user=user)
 
+
 class CreateProduct(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
@@ -74,10 +81,12 @@ class CreateProduct(graphene.Mutation):
     product = graphene.Field(lambda: Product)
 
     def mutate(self, info, title, price, description, category_id, images):
-        product = ProductModel(title=title, price=price, description=description, category_id=category_id, images=images)
+        product = ProductModel(title=title, price=price, description=description, category_id=category_id,
+                               images=images)
         db.session.add(product)
         db.session.commit()
         return CreateProduct(product=product)
+
 
 class CreateCategory(graphene.Mutation):
     class Arguments:
@@ -91,6 +100,7 @@ class CreateCategory(graphene.Mutation):
         db.session.add(category)
         db.session.commit()
         return CreateCategory(category=category)
+
 
 class CreateFile(graphene.Mutation):
     class Arguments:
@@ -106,10 +116,12 @@ class CreateFile(graphene.Mutation):
         db.session.commit()
         return CreateFile(file=file)
 
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_product = CreateProduct.Field()
     create_category = CreateCategory.Field()
     create_file = CreateFile.Field()
+
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
